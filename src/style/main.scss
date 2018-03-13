@@ -1,3 +1,118 @@
-// body {
-//   background-color: red;
-// }
+
+@import './reset';
+@import './commonStyles';
+
+$font-family-main: 'Montserrat', sans-serif;
+
+.app-container {
+  display: flex;
+  align-items: flex-start;
+  height: 100vh;
+  overflow: scroll;
+  padding: 20px 20px 0;
+  box-sizing: border-box;
+
+  .columns-list {
+    display: flex;
+    align-items: flex-start;
+    margin-right: 15px;
+    .column-wrap {
+      position: relative;
+      width: 300px;
+      flex-shrink: 0;
+      background-color: #e3e4e6;
+      border-radius: 3px;
+      padding: 10px;
+      margin-right: 15px;
+      &:last-child {
+        margin-right: 0;
+      }
+      .column-title {
+        font: 500 14px $font-family-main;
+        margin-bottom: 10px;
+      }
+      .add-ticket-input {
+        width: 100%;
+        border: none;
+        background-color: transparent;
+        margin: 10px 0 0;
+        padding: 5px 0;
+        font: 13px $font-family-main;
+        outline: none;
+      }
+
+      .tickets-container {
+        width: 100%;
+        .ticket-wrap {
+          position: relative;
+          width: 100%;
+          border-radius: 3px;
+          background-color: #fff;
+          padding: 10px 25px 10px 7px;
+          margin-bottom: 10px;
+          box-sizing: border-box;
+          &:last-child {
+            margin-bottom: 0;
+          }
+          .ticket-descr {
+            font: 13px $font-family-main;
+          }
+          .close-icon {
+            width: 10px;
+            height: 10px;
+            right: 7px;
+          }
+        }
+      }
+    }
+  }
+
+  .add-column-input {
+    border: none;
+    border-radius: 3px;
+    background-color: #186da5;
+    font: 15px $font-family-main;
+    color: #fff;
+    padding:  10px;
+    &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      font: 14px $font-family-main;
+      color: #68b5d9;
+    }
+    &::-moz-placeholder { /* Firefox 19+ */
+      font: 14px $font-family-main;
+      color: #68b5d9;
+    }
+    &:-ms-input-placeholder { /* IE 10+ */
+      font: 14px $font-family-main;
+      color: #68b5d9;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+      font: 14px $font-family-main;
+      color: #68b5d9;
+    }
+  }
+
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    height: auto;
+    min-height: 100%;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    overflow: hidden;
+    .add-column-input {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .columns-list {
+      width: 100%;
+      flex-direction: column-reverse;
+      margin-right: 0;
+      .column-wrap {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+    }
+  }
+}

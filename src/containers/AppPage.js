@@ -1,45 +1,179 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
-import { setData } from '../actions/App/AppActions';
+import { setData } from '../actions/appActions';
 
-// import '../style/style.scss';
+import { ColumnWrap } from '../components';
+
+const dummyData = [
+  {
+    id: 1,
+    title: 'Column',
+    onDelete: () => true,
+    tickets: [
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj',
+        id: 1,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 2,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 3,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 4,
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: 'Column',
+    onDelete: () => true,
+    tickets: [
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 1,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 2,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 3,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 4,
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: 'Column',
+    onDelete: () => true,
+    tickets: [
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj',
+        id: 1,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 2,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 3,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 4,
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: 'Column',
+    onDelete: () => true,
+    tickets: [
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj',
+        id: 1,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 2,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 3,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 4,
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: 'Column',
+    onDelete: () => true,
+    tickets: [
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj',
+        id: 1,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 2,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 3,
+      },
+      {
+        onDelete: () => true,
+        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
+        id: 4,
+      },
+    ],
+  },
+];
 
 class AppPage extends Component {
   constructor(props){
     super(props);
   }
 
-  componentWillMount() {
-
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-
-  }
+  static propTypes = {}
 
   render() {
     return (
       <div className="app-container">
-asdas
-        <div className="content-container">
-          {this.props.children}
+        <div className="columns-list">
+          {
+            dummyData.map(item => (
+              <ColumnWrap
+                key={item.id}
+                { ...item }
+              />
+            ))
+          }
         </div>
+        <input
+          className="add-column-input"
+          placeholder="Add a list..."
+        />
       </div>
     )
   }
 }
 
-AppPage.propTypes = {};
+const mapStateToProps = (state) => ({
+  state
+})
 
-// Which props do we want to inject, given the global state?
-function mapStateToProps(state) {
-  return state;
-}
-
-// Wrap the component to inject dispatch and state into it
 export default connect(mapStateToProps)(AppPage);
