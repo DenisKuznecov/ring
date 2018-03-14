@@ -1,179 +1,103 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import { setData } from '../actions/appActions';
+import * as appActions from '../actions/appActions';
 
 import { ColumnWrap } from '../components';
-
-const dummyData = [
-  {
-    id: 1,
-    title: 'Column',
-    onDelete: () => true,
-    tickets: [
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj',
-        id: 1,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 2,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 3,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 4,
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: 'Column',
-    onDelete: () => true,
-    tickets: [
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 1,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 2,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 3,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 4,
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Column',
-    onDelete: () => true,
-    tickets: [
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj',
-        id: 1,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 2,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 3,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 4,
-      },
-    ],
-  },
-  {
-    id: 4,
-    title: 'Column',
-    onDelete: () => true,
-    tickets: [
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj',
-        id: 1,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 2,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 3,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 4,
-      },
-    ],
-  },
-  {
-    id: 5,
-    title: 'Column',
-    onDelete: () => true,
-    tickets: [
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj',
-        id: 1,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 2,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 3,
-      },
-      {
-        onDelete: () => true,
-        descr: 'Ticketadkaj dka ksjdakjshd kjadslhaks jdhk jashdk jhak jsdkjhasj hdkajsh jdhakjs hdkj ahskjhdjkahsj kdhajk s',
-        id: 4,
-      },
-    ],
-  },
-];
 
 class AppPage extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      columnTitle: '',
+    };
   }
 
-  static propTypes = {}
+  static propTypes = {
+    columns: PropTypes.array,
+  }
+  
+  static defaultTypes = {
+    columns: [],
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.columns.length !== this.props.columns) {
+      this.scrollToTheRight();
+    }
+  }
+
+  onDeleteColumn = (columnId) => this.props.deleteColumn(columnId)
+
+  onDeleteTicket = (columnId, ticketId) => this.props.deleteTicket({
+    columnId,
+    ticketId,
+  })
+
+  onAddTicket = payload => this.props.addTicket(payload)
+
+  onAddColumn = (e) => {
+    e.preventDefault();
+    const payload = {
+      id: new Date().getMilliseconds(),
+      title: this.state.columnTitle,
+      tickets: [],
+    };
+
+    this.props.addColumn(payload);
+    this.setState({ columnTitle: '' });
+  }
+
+  // For scrolling block to the right end
+  scrollToTheRight = () => {
+    const elem = document.getElementsByClassName('app-container')[0];
+    elem.scrollTo(elem.scrollWidth, 0);
+  }
+
+  onChange = ({ target }) => this.setState({ columnTitle: target.value })
 
   render() {
+    const { columns } = this.props;
+
     return (
       <div className="app-container">
         <div className="columns-list">
           {
-            dummyData.map(item => (
-              <ColumnWrap
-                key={item.id}
-                { ...item }
-              />
-            ))
+            columns.length > 0 ?
+              columns.map(item => (
+                <ColumnWrap
+                  key={item.id}
+                  onDeleteColumn={() => this.onDeleteColumn(item.id)}
+                  onDeleteTicket={this.onDeleteTicket}
+                  onAddTicket={this.onAddTicket}
+                  column={item}
+                />
+              )) :
+              <p className="info-message">There is no columns yet.</p>
           }
         </div>
-        <input
-          className="add-column-input"
-          placeholder="Add a list..."
-        />
+
+        <form onSubmit={this.onAddColumn} className="add-column-wrap">
+          <input
+            className="add-column-input"
+            placeholder="Add a list..."
+            value={this.state.columnTitle}
+            onChange={this.onChange}
+          />
+        </form>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
-  state
-})
+const mapStateToProps = state => ({
+  columns: state.app.columns,
+});
 
-export default connect(mapStateToProps)(AppPage);
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators(appActions, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppPage);

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import _ from 'lodash';
 
-import { AppPage } from './containers';
+import AppPage from './containers/AppPage';
 
 import { configureStore } from './config/store';
 

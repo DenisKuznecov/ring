@@ -1,13 +1,26 @@
-import { SET_DATA } from '../actions/appActions';
+import * as TYPES from '../types/appTypes';
+import * as helpers from './appReducerHelpers';
 
 const initialState = {
-  data: null
+  columns: [],
 };
 
 export const appReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case SET_DATA:
-      return { ...state, data: payload };
+    case TYPES.ADD_COLUMN:
+      return {
+        ...state,
+        columns: [ ...state.columns, payload ],
+      };
+    case TYPES.DELETE_COLUMN:
+      return {
+        ...state,
+        columns: state.columns.filter(column => column.id !== payload),
+      };
+    case TYPES.ADD_TICKET:
+      return helpers.addTicket(state, payload);
+    case TYPES.DELETE_TICKET:
+      return helpers.deleteTicket(state, payload);
     default:
       return state;
   }

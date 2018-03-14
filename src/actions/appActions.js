@@ -1,6 +1,21 @@
-export const SET_DATA = 'SET_DATA';
+import * as TYPES from '../types/appTypes';
 
-export const setDATA = payload => ({
-  type: SET_DATA,
+export const addColumn = payload => ({
+  type: TYPES.ADD_COLUMN,
+  payload,
+});
+
+export const deleteColumn = payload => ({
+  type: TYPES.DELETE_COLUMN,
+  payload,
+});
+
+export const addTicket = payload => ({
+  type: TYPES.ADD_TICKET,
+  payload,
+});
+
+export const deleteTicket = payload => ({
+  type: TYPES.DELETE_TICKET,
   payload,
 });

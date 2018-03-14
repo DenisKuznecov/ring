@@ -7,39 +7,76 @@ import {
 } from '../';
 
 export default class ColumnWrap extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ticketDescr: ''
+    };
+  }
+
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    tickets: PropTypes.array.isRequired,
+    onDeleteColumn: PropTypes.func.isRequired,
+    onDeleteTicket: PropTypes.func.isRequired,
+    onAddTicket: PropTypes.func.isRequired,
+    column: PropTypes.object.isRequired,
   };
 
+  // Save ticket to the store
+  onSubmit = (e, columnId) => {
+    e.preventDefault();
+    const payload = {
+      columnId,
+      ticket: {
+        descr: this.state.ticketDescr,
+        id: new Date().getMilliseconds(),
+      },
+    };
+
+    this.props.onAddTicket(payload);
+    this.setState({ ticketDescr: '' });
+  }
+
+  onChange = ({ target }) => this.setState({ ticketDescr: target.value })
+
   render () {
-    const { onDelete, title, tickets } = this.props;
+    const {
+      onDeleteColumn,
+      onDeleteTicket,
+      column: { title, tickets, id },
+    } = this.props;
+
+    const { ticketDescr } = this.state;
 
     return (
       <div className="column-wrap">
-        <CloseIcon onClick={onDelete}/>
+        <CloseIcon onClick={onDeleteColumn}/>
 
-        <div className="column-title">
+        <h2 className="column-title">
           {title}
-        </div>
+        </h2>
 
         <div className="tickets-container">
           {
-            tickets.map((item, idx) => (
-              <TicketWrap
-                key={item.id}
-                onDelete={item.onDelete}
-                descr={item.descr}
-              />
-            ))
+            tickets.length > 0 ?
+              tickets.map((item, idx) => (
+                <TicketWrap
+                  key={item.id}
+                  onDelete={() => onDeleteTicket(id, item.id)}
+                  descr={item.descr}
+                />
+              )) :
+              <p>Please add ticket</p>
           }
         </div>
         
-        <input
-          className="add-ticket-input"
-          placeholder="Add a card..."
-        />
+        <form onSubmit={e => this.onSubmit(e, id)}>
+          <input
+            className="add-ticket-input"
+            placeholder="Add a card..."
+            value={ticketDescr}
+            onChange={this.onChange}
+          />
+        </form>
       </div>
     );
   }
