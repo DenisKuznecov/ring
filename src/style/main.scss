@@ -24,9 +24,6 @@ $font-family-main: 'Montserrat', sans-serif;
       border-radius: 3px;
       padding: 10px;
       margin-right: 15px;
-      &:last-child {
-        margin-right: 0;
-      }
       .column-title {
         font-weight: 500;
         font-size: 14px;
@@ -36,7 +33,7 @@ $font-family-main: 'Montserrat', sans-serif;
         width: 100%;
         border: none;
         background-color: transparent;
-        margin: 10px 0 0;
+        margin: 10px 0 10px;
         padding: 5px 0;
         font-size: 13px;
         outline: none;
@@ -51,9 +48,6 @@ $font-family-main: 'Montserrat', sans-serif;
           background-color: #fff;
           padding: 10px 25px 10px 7px;
           margin-bottom: 10px;
-          &:last-child {
-            margin-bottom: 0;
-          }
           .ticket-descr {
             font-size: 13px;
             line-height: 21px;

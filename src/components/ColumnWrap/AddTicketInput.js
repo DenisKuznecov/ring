@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { HuePicker } from 'react-color';
+import { CirclePicker } from 'react-color';
 
 const AddTicketInput = ({
   onSubmit,
@@ -15,7 +15,7 @@ const AddTicketInput = ({
       value={ticketDescr}
       onChange={e => setValue('ticketDescr', e.target.value)}
     />
-    <HuePicker
+    <CirclePicker
       width="100%"
       color={ticketColor}
       onChangeComplete={color => setValue('ticketColor', color.hex)}

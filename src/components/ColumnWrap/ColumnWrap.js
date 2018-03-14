@@ -5,6 +5,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import {
   CloseIcon,
   TicketWrap,
+  TicketsList,
 } from '../';
 
 import AddTicketInput from './AddTicketInput';
@@ -27,6 +28,7 @@ export default class ColumnWrap extends PureComponent {
 
   // Save ticket to the store
   onSubmit = (e, columnId) => {
+    console.log(e);
     e.preventDefault();
     const payload = {
       columnId,
@@ -57,40 +59,32 @@ export default class ColumnWrap extends PureComponent {
       <Draggable draggableId={String(id)} type="COLUMNS" index={idx}>
         {(provided, snapshot) => (
           <div>
-          <div
-            className="column-wrap"
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <CloseIcon onClick={onDeleteColumn}/>
+            <div
+              className="column-wrap"
+              ref={provided.innerRef}
+              style={{ backgroundColor: snapshot.isDragging ? 'blue' : 'white' }}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+            >
+              <CloseIcon onClick={onDeleteColumn}/>
 
-            <h2 className="column-title">
-              {title}
-            </h2>
+              <h2 className="column-title">
+                {title}
+              </h2>
+              
+              <TicketsList
+                tickets={tickets}
+                columnId={id}
+                onDeleteTicket={onDeleteTicket}
+              />
 
-            <div className="tickets-container">
-              {
-                tickets.length > 0 ?
-                  tickets.map((item) => (
-                    <TicketWrap
-                      key={item.id}
-                      onDelete={() => onDeleteTicket(id, item.id)}
-                      descr={item.descr}
-                      color={item.color}
-                    />
-                  )) :
-                  <p>Please add ticket</p>
-              }
+              <AddTicketInput
+                onSubmit={e => this.onSubmit(e, id)}
+                setValue={this.setValue}
+                ticketDescr={ticketDescr}
+                ticketColor={ticketColor}
+              />
             </div>
-
-            <AddTicketInput
-              onSubmit={e => this.onSubmit(e, id)}
-              setValue={this.setValue}
-              ticketDescr={ticketDescr}
-              ticketColor={ticketColor}
-            />
-          </div>
           {provided.placholder}
           </div>
         )}

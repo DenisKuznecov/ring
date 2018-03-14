@@ -1,5 +1,16 @@
-const saveToLs = (data) => console.log()
-//  || localStorage.setItem('data', JSON.stringify(data));
+const saveToLs = (data) => localStorage.setItem('data', JSON.stringify(data));
+
+const arraySort = (arr, prevIdx, nextIdx) => {
+  const array = arr.slice(0);
+  if (prevIdx >= array.length) {
+    let k = prevIdx - array.length;
+    while (k-- + 1) {
+      array.push(undefined);
+    }
+  }
+  array.splice(prevIdx, 0, array.splice(nextIdx, 1)[0]);
+  return array;
+}
 
 /**
  * helper function for adding column to store and ls
@@ -77,18 +88,31 @@ export const addTicket = (state, payload) => {
   return newState;
 };
 
-export const updateColumns = (state, { id, destinationIdx, sourceIdx }) => {
-  const targetColumn = {...state.columns[sourceIdx]};
-  console.log('target', targetColumn);
-  const columns = [...state.columns.filter((item, idx) => idx !== sourceIdx)];
-  console.log('filteredArray', columns);
-  columns[sourceIdx + destinationIdx] = targetColumn;
-  console.log('changed', columns);
-  
-  const newState = {
-    ...state,
-    columns,
-  };
+/**
+ * For sorting columns while drag and drop
+ * @param {object} state 
+ * @param {*} param1
+ */
+export const updateColumns = (state, { destinationIdx, sourceIdx }) => {
+  const destIdx = destinationIdx === -1 ? 0 : destinationIdx;
+  const columns = arraySort(state.columns, destIdx, sourceIdx);
+
+  const newState = { ...state, columns };
+  saveToLs(newState);
+
+  return newState;
+}
+
+/**
+ * For sorting tickets while drag and drop
+ * @param {object} state 
+ * @param {*} param1
+ */
+export const updateTickets = (state, { destinationIdx, sourceIdx }) => {
+  // const destIdx = destinationIdx === -1 ? 0 : destinationIdx;
+  // const columns = arraySort(state.columns, destIdx, sourceIdx);
+
+  const newState = { ...state };
   saveToLs(newState);
 
   return newState;

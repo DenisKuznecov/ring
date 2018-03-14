@@ -24,3 +24,8 @@ export const updateColumns = payload => ({
   type: TYPES.UPDATE_COLUMNS,
   payload,
 });
+
+export const updateTickets = payload => ({
+  type: TYPES.UPDATE_TICKETS,
+  payload,
+});

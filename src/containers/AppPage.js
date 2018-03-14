@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import * as appActions from '../actions/appActions';
 
-import { ColumnWrap } from '../components';
+import { ColumnWrap, ColumnsList } from '../components';
 
 class AppPage extends Component {
   constructor(props){
@@ -25,6 +25,7 @@ class AppPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log(prevProps);
     // Scroll block to the right if length of columns array is different
     if (prevProps.columns.length !== this.props.columns.length) {
       this.scrollToTheRight();
@@ -60,16 +61,28 @@ class AppPage extends Component {
 
   onChange = ({ target }) => this.setState({ columnTitle: target.value })
 
+  /**
+   * check if user drag column or ticket
+   * and fire up necessary event with necessary data
+   */
   onDragEnd = (result) => {
     console.log(result);
-    const payload = {
-      id: result.draggableId,
-      destinationIdx: result.destination ? result.destination.index : null,
-      sourceIdx: result.source.index,
-    };
-
-    if (result.reason === 'DROP') {
-      this.props.updateColumns(payload);
+    if (result.reason === 'DROP' && result.destination) {
+      if (result.type === 'COLUMNS') {
+        const payload = {
+          destinationIdx: result.destination ? result.destination.index : null,
+          sourceIdx: result.source.index,
+        };
+        this.props.updateColumns(payload);
+      } else {
+        const payload = {
+          destinationIdx: result.destination ? result.destination.index : null,
+          sourceIdx: result.source.index,
+          destId: result.destination ? result.destination.droppableId : null,
+          sourceId: result.source.index.droppableId,
+        };
+        this.props.updateTickets(payload);
+      }
     }
   };
 
@@ -81,35 +94,12 @@ class AppPage extends Component {
         onDragEnd={this.onDragEnd}
       >
         <div className="app-container">
-          {
-            columns.length > 0 ?
-              <Droppable droppableId="columns" type="COLUMNS">
-                {(provided, snapshot) => (
-                  <div>
-                    <div
-                      className="columns-list"
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                    >
-                      {
-                        columns.map((item, idx) => (
-                          <ColumnWrap
-                            key={item.id}
-                            onDeleteColumn={() => this.onDeleteColumn(item.id)}
-                            onDeleteTicket={this.onDeleteTicket}
-                            onAddTicket={this.onAddTicket}
-                            column={item}
-                            idx={idx}
-                          />
-                        ))
-                      }
-                    </div>
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable> :
-              <p className="info-message">There is no columns yet.</p>
-          }
+          <ColumnsList
+            columns={columns}
+            onDeleteColumn={this.onDeleteColumn}
+            onDeleteTicket={this.onDeleteTicket}
+            onAddTicket={this.onAddTicket}
+          />
 
           <form onSubmit={this.onAddColumn} className="add-column-wrap">
             <input

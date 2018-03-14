@@ -24,6 +24,8 @@ export const appReducer = (state = initialState, { type, payload }) => {
       return helpers.deleteTicket(state, payload);
     case TYPES.UPDATE_COLUMNS:
       return helpers.updateColumns(state, payload);
+    case TYPES.UPDATE_TICKETS:
+      return helpers.updateTickets(state, payload);
     default:
       return state;
   }
