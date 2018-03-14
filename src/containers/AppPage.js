@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import * as appActions from '../actions/appActions';
 
@@ -25,7 +26,7 @@ class AppPage extends Component {
 
   componentDidUpdate(prevProps) {
     // Scroll block to the right if length of columns array is different
-    if (prevProps.columns.length !== this.props.columns) {
+    if (prevProps.columns.length !== this.props.columns.length) {
       this.scrollToTheRight();
     }
   }
@@ -59,36 +60,67 @@ class AppPage extends Component {
 
   onChange = ({ target }) => this.setState({ columnTitle: target.value })
 
+  onDragEnd = (result) => {
+    console.log(result);
+    const payload = {
+      id: result.draggableId,
+      destinationIdx: result.destination ? result.destination.index : null,
+      sourceIdx: result.source.index,
+    };
+
+    if (result.reason === 'DROP') {
+      this.props.updateColumns(payload);
+    }
+  };
+
   render() {
     const { columns } = this.props;
 
     return (
-      <div className="app-container">
-        <div className="columns-list">
+      <DragDropContext
+        onDragEnd={this.onDragEnd}
+      >
+        <div className="app-container">
           {
             columns.length > 0 ?
-              columns.map(item => (
-                <ColumnWrap
-                  key={item.id}
-                  onDeleteColumn={() => this.onDeleteColumn(item.id)}
-                  onDeleteTicket={this.onDeleteTicket}
-                  onAddTicket={this.onAddTicket}
-                  column={item}
-                />
-              )) :
+              <Droppable droppableId="columns" type="COLUMNS">
+                {(provided, snapshot) => (
+                  <div>
+                    <div
+                      className="columns-list"
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                    >
+                      {
+                        columns.map((item, idx) => (
+                          <ColumnWrap
+                            key={item.id}
+                            onDeleteColumn={() => this.onDeleteColumn(item.id)}
+                            onDeleteTicket={this.onDeleteTicket}
+                            onAddTicket={this.onAddTicket}
+                            column={item}
+                            idx={idx}
+                          />
+                        ))
+                      }
+                    </div>
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable> :
               <p className="info-message">There is no columns yet.</p>
           }
-        </div>
 
-        <form onSubmit={this.onAddColumn} className="add-column-wrap">
-          <input
-            className="add-column-input"
-            placeholder="Add a list..."
-            value={this.state.columnTitle}
-            onChange={this.onChange}
-          />
-        </form>
-      </div>
+          <form onSubmit={this.onAddColumn} className="add-column-wrap">
+            <input
+              className="add-column-input"
+              placeholder="Add a list..."
+              value={this.state.columnTitle}
+              onChange={this.onChange}
+            />
+          </form>
+        </div>
+      </DragDropContext>
     )
   }
 }

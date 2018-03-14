@@ -19,3 +19,8 @@ export const deleteTicket = payload => ({
   type: TYPES.DELETE_TICKET,
   payload,
 });
+
+export const updateColumns = payload => ({
+  type: TYPES.UPDATE_COLUMNS,
+  payload,
+});

@@ -1,16 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Draggable } from 'react-beautiful-dnd';
 
 import {
   CloseIcon,
   TicketWrap,
 } from '../';
 
+import AddTicketInput from './AddTicketInput';
+
 export default class ColumnWrap extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      ticketDescr: ''
+      ticketDescr: '',
+      ticketColor: '',
     };
   }
 
@@ -28,6 +32,7 @@ export default class ColumnWrap extends PureComponent {
       columnId,
       ticket: {
         descr: this.state.ticketDescr,
+        color: this.state.ticketColor,
         id: new Date().getMilliseconds(),
       },
     };
@@ -36,48 +41,60 @@ export default class ColumnWrap extends PureComponent {
     this.setState({ ticketDescr: '' });
   }
 
-  onChange = ({ target }) => this.setState({ ticketDescr: target.value })
+  setValue = (field, value) => this.setState({ [field]: value })
 
   render () {
     const {
       onDeleteColumn,
       onDeleteTicket,
+      idx,
       column: { title, tickets, id },
     } = this.props;
 
-    const { ticketDescr } = this.state;
+    const { ticketDescr, ticketColor } = this.state;
 
     return (
-      <div className="column-wrap">
-        <CloseIcon onClick={onDeleteColumn}/>
+      <Draggable draggableId={String(id)} type="COLUMNS" index={idx}>
+        {(provided, snapshot) => (
+          <div>
+          <div
+            className="column-wrap"
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <CloseIcon onClick={onDeleteColumn}/>
 
-        <h2 className="column-title">
-          {title}
-        </h2>
+            <h2 className="column-title">
+              {title}
+            </h2>
 
-        <div className="tickets-container">
-          {
-            tickets.length > 0 ?
-              tickets.map((item, idx) => (
-                <TicketWrap
-                  key={item.id}
-                  onDelete={() => onDeleteTicket(id, item.id)}
-                  descr={item.descr}
-                />
-              )) :
-              <p>Please add ticket</p>
-          }
-        </div>
-        
-        <form onSubmit={e => this.onSubmit(e, id)}>
-          <input
-            className="add-ticket-input"
-            placeholder="Add a card..."
-            value={ticketDescr}
-            onChange={this.onChange}
-          />
-        </form>
-      </div>
+            <div className="tickets-container">
+              {
+                tickets.length > 0 ?
+                  tickets.map((item) => (
+                    <TicketWrap
+                      key={item.id}
+                      onDelete={() => onDeleteTicket(id, item.id)}
+                      descr={item.descr}
+                      color={item.color}
+                    />
+                  )) :
+                  <p>Please add ticket</p>
+              }
+            </div>
+
+            <AddTicketInput
+              onSubmit={e => this.onSubmit(e, id)}
+              setValue={this.setValue}
+              ticketDescr={ticketDescr}
+              ticketColor={ticketColor}
+            />
+          </div>
+          {provided.placholder}
+          </div>
+        )}
+      </Draggable>
     );
   }
 }

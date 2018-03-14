@@ -3,3 +3,5 @@ export const DELETE_COLUMN = '@app/DELETE_COLUMN';
 
 export const ADD_TICKET = '@app/ADD_TICKET';
 export const DELETE_TICKET = '@app/DELETE_TICKET';
+
+export const UPDATE_COLUMNS = '@app/UPDATE_COLUMNS';
