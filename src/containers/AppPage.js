@@ -24,6 +24,7 @@ class AppPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    // Scroll block to the right if length of columns array is different
     if (prevProps.columns.length !== this.props.columns) {
       this.scrollToTheRight();
     }
