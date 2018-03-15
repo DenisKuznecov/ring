@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
 
-import { ColumnWrap } from '../'
+import ColumnWrap from './ColumnWrap/ColumnWrap';
 
 const ColumnsList = ({
   columns,
@@ -10,7 +10,11 @@ const ColumnsList = ({
   onDeleteTicket,
   onAddTicket,
 }) => (
-  <Droppable droppableId="columns" type="COLUMNS" direction="horizontal">
+  <Droppable
+    droppableId="columns"
+    type="COLUMNS"
+    direction="horizontal"
+  >
     {(provided, snapshot) => (
       <div
         className="columns-list"

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
 
-import TicketWrap from '../TicketWrap/TicketWrap';
+import TicketWrap from './TicketWrap/TicketWrap';
 
 const TicketsList = ({
   tickets,
@@ -23,7 +23,7 @@ const TicketsList = ({
               key={item.id}
               id={item.id}
               idx={idx}
-              onDelete={() => onDeleteTicket(id, item.id)}
+              onDelete={() => onDeleteTicket(item.id)}
               descr={item.descr}
               color={item.color}
             />

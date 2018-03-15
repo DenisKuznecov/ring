@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { DragDropContext } from 'react-beautiful-dnd';
+import isMobile from 'ismobilejs';
 
 import * as appActions from '../actions/appActions';
 
@@ -25,9 +26,7 @@ class AppPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps);
-    // Scroll block to the right if length of columns array is different
-    if (prevProps.columns.length !== this.props.columns.length) {
+    if (prevProps.columns.length < this.props.columns.length) {
       this.scrollToTheRight();
     }
   }
@@ -43,48 +42,55 @@ class AppPage extends Component {
 
   onAddColumn = (e) => {
     e.preventDefault();
-    const payload = {
-      id: new Date().getMilliseconds(),
-      title: this.state.columnTitle,
-      tickets: [],
-    };
-
-    this.props.addColumn(payload);
-    this.setState({ columnTitle: '' });
+    if (this.state.columnTitle) {
+      const payload = {
+        id: new Date().getMilliseconds(),
+        title: this.state.columnTitle,
+        tickets: [],
+      };
+  
+      this.props.addColumn(payload);
+      this.setState({ columnTitle: '' });
+    } 
   }
 
-  // For scrolling block to the right end
+  //check if user drag column or ticket and fire up necessary event with necessary data
+  onDragEnd = (result) => {
+    if (result.reason === 'DROP' && result.destination) {
+      result.type === 'COLUMNS' ?
+        this.onUpdateColumns(result) : this.onUpdateTickets(result);
+    }
+  }
+
+  // sort columns when user change column location
+  onUpdateColumns = (data) => {
+    const payload = {
+      destinationIdx: data.destination ? data.destination.index : null,
+      sourceIdx: data.source.index,
+    };
+    this.props.updateColumns(payload);
+  }
+
+  // sort tickets when user change ticket location
+  onUpdateTickets = (data) => {
+    const payload = {
+      destinationIdx: data.destination ? data.destination.index : null,
+      sourceIdx: data.source.index,
+      destId: data.destination ? +data.destination.droppableId : null,
+      sourceId: +data.source.droppableId,
+      dragId: +data.draggableId,
+    };
+    this.props.updateTickets(payload);
+  }
+
+  // For scrolling block to the right or left end when user add new column
   scrollToTheRight = () => {
     const elem = document.getElementsByClassName('app-container')[0];
-    elem.scrollTo(elem.scrollWidth, 0);
+    const xpos = isMobile.phone ? 0 : elem.scrollWidth;
+    elem.scrollTo(xpos, 0);
   }
 
   onChange = ({ target }) => this.setState({ columnTitle: target.value })
-
-  /**
-   * check if user drag column or ticket
-   * and fire up necessary event with necessary data
-   */
-  onDragEnd = (result) => {
-    console.log(result);
-    if (result.reason === 'DROP' && result.destination) {
-      if (result.type === 'COLUMNS') {
-        const payload = {
-          destinationIdx: result.destination ? result.destination.index : null,
-          sourceIdx: result.source.index,
-        };
-        this.props.updateColumns(payload);
-      } else {
-        const payload = {
-          destinationIdx: result.destination ? result.destination.index : null,
-          sourceIdx: result.source.index,
-          destId: result.destination ? result.destination.droppableId : null,
-          sourceId: result.source.index.droppableId,
-        };
-        this.props.updateTickets(payload);
-      }
-    }
-  };
 
   render() {
     const { columns } = this.props;

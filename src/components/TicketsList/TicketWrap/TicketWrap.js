@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { CloseIcon } from '../';
+import { CloseIcon } from '../../';
 
 const TicketWrap = ({
   onDelete,
@@ -11,20 +11,21 @@ const TicketWrap = ({
   id,
   idx,
 }) => {
-  const ticketStyle = {
-    backgroundColor: color,
-  };
+  const styles = (providedStyles) => ({
+    backgroundColor: color || '#fff',
+    ...providedStyles,
+  })
 
   return (
     <Draggable draggableId={String(id)} type="TICKETS" index={idx}>
       {(provided, snapshot) => (
         <div>
           <div
-            style = {ticketStyle}
             className="ticket-wrap"
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
+            style={styles(provided.draggableProps.style)}
           >
             <CloseIcon onClick={onDelete}/>
             <p className="ticket-descr">
@@ -43,10 +44,6 @@ TicketWrap.propTypes = {
   color: PropTypes.string,
   id: PropTypes.number.isRequired,
   idx: PropTypes.number.isRequired,
-};
-
-TicketWrap.defaultTypes = {
-  color: '#fff',
 };
 
 export default TicketWrap;

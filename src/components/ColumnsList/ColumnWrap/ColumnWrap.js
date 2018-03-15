@@ -4,9 +4,8 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import {
   CloseIcon,
-  TicketWrap,
   TicketsList,
-} from '../';
+} from '../../';
 
 import AddTicketInput from './AddTicketInput';
 
@@ -28,19 +27,20 @@ export default class ColumnWrap extends PureComponent {
 
   // Save ticket to the store
   onSubmit = (e, columnId) => {
-    console.log(e);
     e.preventDefault();
-    const payload = {
-      columnId,
-      ticket: {
-        descr: this.state.ticketDescr,
-        color: this.state.ticketColor,
-        id: new Date().getMilliseconds(),
-      },
-    };
-
-    this.props.onAddTicket(payload);
-    this.setState({ ticketDescr: '' });
+    if (this.state.ticketDescr) {
+      const payload = {
+        columnId,
+        ticket: {
+          descr: this.state.ticketDescr,
+          color: this.state.ticketColor,
+          id: new Date().getMilliseconds(),
+        },
+      };
+  
+      this.props.onAddTicket(payload);
+      this.setState({ ticketDescr: '' });
+    }
   }
 
   setValue = (field, value) => this.setState({ [field]: value })
@@ -75,7 +75,7 @@ export default class ColumnWrap extends PureComponent {
               <TicketsList
                 tickets={tickets}
                 columnId={id}
-                onDeleteTicket={onDeleteTicket}
+                onDeleteTicket={(ticketId) => onDeleteTicket(id, ticketId)}
               />
 
               <AddTicketInput

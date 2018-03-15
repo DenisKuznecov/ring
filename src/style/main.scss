@@ -98,10 +98,11 @@ $font-family-main: 'Montserrat', sans-serif;
     min-height: 100%;
     flex-direction: column-reverse;
     justify-content: flex-end;
+    padding: 20px 0 0;
     overflow: hidden;
     .add-column-wrap {
       width: 100%;
-      padding-right: 0;
+      padding: 0 20px;
       margin-bottom: 20px;
       .add-column-input {
         width: 100%;
@@ -109,11 +110,10 @@ $font-family-main: 'Montserrat', sans-serif;
     }
     .columns-list {
       width: 100%;
-      flex-direction: column-reverse;
-      margin-right: 0;
-      .column-wrap {
-        width: 100%;
-        margin-bottom: 15px;
+      height: 100%;
+      overflow: scroll;
+      div {
+        flex-shrink: 0;
       }
     }
   }
