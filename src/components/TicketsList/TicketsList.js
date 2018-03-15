@@ -16,20 +16,21 @@ const TicketsList = ({
         ref={provided.innerRef}
         {...provided.droppableProps}
       >
-      {
-        tickets.length > 0 ?
-          tickets.map((item, idx) => (
-            <TicketWrap
-              key={item.id}
-              id={item.id}
-              idx={idx}
-              onDelete={() => onDeleteTicket(item.id)}
-              descr={item.descr}
-              color={item.color}
-            />
-          )) :
-          <p>Please add ticket</p>
-      }
+        {
+          tickets.length > 0 ?
+            tickets.map((item, idx) => (
+              <TicketWrap
+                key={item.id}
+                id={item.id}
+                idx={idx}
+                onDelete={() => onDeleteTicket(item.id)}
+                descr={item.descr}
+                color={item.color}
+              />
+            )) :
+            <p>Please add ticket</p>
+        }
+        {provided.placeholder}
       </div>
     )}
   </Droppable>

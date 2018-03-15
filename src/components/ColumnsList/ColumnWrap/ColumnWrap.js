@@ -62,7 +62,6 @@ export default class ColumnWrap extends PureComponent {
             <div
               className="column-wrap"
               ref={provided.innerRef}
-              style={{ backgroundColor: snapshot.isDragging ? 'blue' : 'white' }}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
             >
@@ -85,7 +84,7 @@ export default class ColumnWrap extends PureComponent {
                 ticketColor={ticketColor}
               />
             </div>
-          {provided.placholder}
+            {provided.placeholder}
           </div>
         )}
       </Draggable>

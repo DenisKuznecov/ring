@@ -32,6 +32,7 @@ const TicketWrap = ({
               {descr}
             </p>
           </div>
+          {provided.placeholder}
         </div>
       )}
     </Draggable>
